@@ -1,0 +1,10 @@
+git remote add ud120-projects https://github.com/udacity/ud120-projects.git
+git fetch ud120-projects 
+git merge -s ours --no-commit ud120-projects/master
+# git read-tree --prefix=rack/ -u rack_remote/master
+git commit -m "Imported ud120-projects as subtree"
+
+# Track upstream changes like so:
+git pull -s subtree ud120-projects master
+
+# Reference: http://stackoverflow.com/a/13738951
