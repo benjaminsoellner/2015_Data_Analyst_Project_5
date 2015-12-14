@@ -1,6 +1,11 @@
 #!/usr/bin/python
 
 import matplotlib.pyplot as plt
+import getopt
+import sys
+import math
+
+from sklearn.metrics import accuracy_score
 from prep_terrain_data import makeTerrainData
 from class_vis import prettyPicture
 
@@ -31,14 +36,43 @@ plt.show()
 ### your code here!  name your classifier object clf if you want the 
 ### visualization code (prettyPicture) to show you the decision boundary
 
+optlist, _ = getopt.gnu_getopt(sys.argv, 'kar')
+options = [o[0] for o in optlist]
 
+print "Training set: ", len(features_train)
+print "Test set: ", len(features_test)
 
+clf = None 
+if "-k" in options:
+    from sklearn.neighbors import KNeighborsClassifier
+    # good to have k be sqrt of observations
+    k = int(math.floor(math.sqrt(len(features_train)+len(features_test))/3))
+    k = k+((k+1)%2) # make sure k is odd number
+    print "Using k-Nearest Neighbor Classifier with k: ", k
+    clf = KNeighborsClassifier(n_neighbors=k, weights='distance')
+elif "-a" in options:
+    from sklearn.ensemble import AdaBoostClassifier
+    from sklearn import tree
+    clfbase = tree.DecisionTreeClassifier(min_samples_split=40)
+    print "Using AdaBoost with Decision Trees (50 iterations)"
+    clf = AdaBoostClassifier(base_estimator=clfbase, n_estimators=50, algorithm='SAMME')
+elif "-r" in options:
+    from sklearn.ensemble import RandomForestClassifier
+    print "Using Random Forest Classifier"
+    clf = RandomForestClassifier(n_estimators=20, criterion='gini', min_samples_split=20)
 
-
-
-
-
-try:
-    prettyPicture(clf, features_test, labels_test)
-except NameError:
-    pass
+    
+if clf is not None:
+    clf.fit(features_train, labels_train)
+    pred = clf.predict(features_test)
+    acc = accuracy_score(pred, labels_test)
+    print "Accuracy score: ", acc
+    try:
+        prettyPicture(clf, features_test, labels_test)
+    except NameError:
+        pass
+else:
+    print "Usage: "
+    print "  python your_algorithm.py -k    Perform k nearest neighbours"
+    print "  python your_algorithm.py -a    Perform ada-boost"
+    print "  python your_algorithm.py -r    Perform random forest"
