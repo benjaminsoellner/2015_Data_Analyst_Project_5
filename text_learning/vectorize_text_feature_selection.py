@@ -54,7 +54,7 @@ for name, from_person in [("sara", from_sara), ("chris", from_chris)]:
             ### ["sara", "shackleton", "chris", "germani"]
             sara = False
             chris = False
-            for s in ["sara", "shackleton", "chris", "germani"]:
+            for s in ["sara", "shackleton", "chris", "germani", "sshacklensf", "cgermannsf"]:
                 new_text = text.replace(s, "")
                 if new_text != text:
                     if s == "sara":
@@ -90,6 +90,3 @@ from sklearn.feature_extraction.text import TfidfVectorizer
 tfidf = TfidfVectorizer(stop_words='english')
 tfidf.fit(word_data)
 tfidf.transform(word_data)
-
-print "len(tfidf.vocabulary_): ", len(tfidf.vocabulary_)
-print "tfidf.get_feature_names()[34597]: ", tfidf.get_feature_names()[34597]
