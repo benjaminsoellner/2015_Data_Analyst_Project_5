@@ -106,6 +106,7 @@ clf = GaussianNB()
 # http://scikit-learn.org/stable/modules/generated/sklearn.cross_validation.StratifiedShuffleSplit.html
 
 ## TODO Task 4a: Do train/test split, potentially with advanced splitting methods
+# e.g. StratifiedShuffleSplit(labels, 1000, random_state = 42)
 
 # Example starting point. Try investigating other evaluation techniques!
 
