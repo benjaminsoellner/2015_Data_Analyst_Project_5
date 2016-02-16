@@ -13,7 +13,7 @@ As I completed the class, I added code and in the end, my final project:
 [README.md file there][4] to get an overview 
 * the ["Data_Analyst_*.html"][3] and "Data_Analyst_*.Rmd" contain the
 final project report
-* folders "00_*" through "13_*" contain code of the lesson mini-quizzes
+* folders "00_\*" through "13_\*" contain code of the lesson mini-quizzes
 * folders without names contain the problem sets
 
 [1]: https://github.com/udacity/ud120-projects
