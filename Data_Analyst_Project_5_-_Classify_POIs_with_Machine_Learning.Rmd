@@ -168,10 +168,11 @@ not make it into the list.
 &nbsp;
 
 
-<a name="#Algorithms" />
-# Algorithms
+# Algorithms 
 
 ## What algorithm did you end up using? What other one(s) did you try?
+
+<a name="Algorithms" />
 I tried a variety of algorithms, all selectable with the ```-c <clf_id>``` 
 option supplied to ```poi_id.py```. Each algorithm, I ran as a baseline
 and then tried improving the classifier by one or more of the following:
@@ -262,11 +263,11 @@ plot_runtime(all.ranked) +
 ```
 
 
-<a name="Tuning-the-Algorithm" />
 # Tuning the Algorithm
 
-## What does it mean to tune the parameters of an algorithm?
+## What does it mean to tune the parameters of an algorithm? 
 
+<a name="Tuning-the-Algorithm" />
 Tuning the algorithm means finding parameters of an algorithm which optimize its
 evaluation metric. Ideally, we would use one of the evaluation metrics we also use
 to evaluate the algorithm as a whole. For manual tuning, this can be the F1 score,
@@ -341,11 +342,11 @@ splits are performed (default = 10, use 1000 to emulate ```tester.py``` and 1 to
 perform only one train-test-split).
 
 
-<a name="Evaluation-Metrics" />
-# Evaluation Metrics
+# Evaluation Metrics 
 
 ## What are the ($\ge 2$) evaluation metrics you chose?
 
+<a name="Evaluation-Metrics" />
 I chose the following metrics:
 
 * $\text{Precision} = \frac{\text{true_positives}}{\text{true_positives} + \text{false_positives}}$ <br />
@@ -399,8 +400,9 @@ increased performance slightly).
 object-oriented design.
 
 
-# Appendix: System Design
+# Appendix: System Design 
 
+<a name="System-Design" /> 
 This section should provide the interested reader with some insights about 
 the design of the code that I wrote and its enhanced capabilities. It quickly 
 became clear to me that I would need to add some more functionality to the 
