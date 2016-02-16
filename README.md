@@ -16,7 +16,7 @@ final project report
 * folders "00_*" through "13_*" contain code of the lesson mini-quizzes
 * folders without names contain the problem sets
 
-[1]: https://github.com/ShengKungYi/projects
+[1]: https://github.com/udacity/ud120-projects
 [2]: https://www.udacity.com/course/viewer#!/c-ud120-nd
 [3]: https://rawgit.com/benjaminsoellner/DAND_5_MachineLearningEnronData/master/Data_Analyst_Project_5_-_Classify_POIs_with_Machine_Learning.html
 [4]: final_project/README.md
