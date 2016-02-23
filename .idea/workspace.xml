@@ -4,20 +4,7 @@
     <option name="CUSTOM_SCOPE_NAME" value="Module 'DAND_5_MachineLearningEnronData'" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="ce9cfc86-6bb8-4073-b856-bbdaf0c8afcd" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/final_project/image_system_architecture.png" afterPath="$PROJECT_DIR$/final_project/image_system_architecture.png" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/final_project/images.vsd" afterPath="$PROJECT_DIR$/final_project/images.vsd" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/codeStyleSettings.xml" afterPath="$PROJECT_DIR$/.idea/codeStyleSettings.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Data_Analyst_Project_5_-_Classify_POIs_with_Machine_Learning.Rmd" afterPath="$PROJECT_DIR$/Data_Analyst_Project_5_-_Classify_POIs_with_Machine_Learning.Rmd" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Data_Analyst_Project_5_-_Classify_POIs_with_Machine_Learning.html" afterPath="$PROJECT_DIR$/Data_Analyst_Project_5_-_Classify_POIs_with_Machine_Learning.html" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/final_project/batch_analyzer.R" afterPath="$PROJECT_DIR$/final_project/batch_analyzer.R" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/final_project/poi_id.py" afterPath="$PROJECT_DIR$/final_project/poi_id.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/final_project/poi_id_batch.csv" afterPath="$PROJECT_DIR$/final_project/poi_id_batch.csv" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/final_project/poi_id_batch.py" afterPath="$PROJECT_DIR$/final_project/poi_id_batch.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/final_project/poi_id_clf_ids.csv" afterPath="$PROJECT_DIR$/final_project/poi_id_clf_ids.csv" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/final_project/poi_id_featurescores.csv" afterPath="$PROJECT_DIR$/final_project/poi_id_featurescores.csv" />
-    </list>
+    <list default="true" id="ce9cfc86-6bb8-4073-b856-bbdaf0c8afcd" name="Default" comment="" />
     <ignored path="DAND_5_MachineLearningEnronData.iws" />
     <ignored path=".idea/workspace.xml" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -662,8 +649,8 @@
     </todo-panel>
   </component>
   <component name="ToolWindowManager">
-    <frame x="-8" y="0" width="1932" height="1038" extended-state="1" />
-    <editor active="true" />
+    <frame x="-8" y="0" width="1932" height="1038" extended-state="0" />
+    <editor active="false" />
     <layout>
       <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.16587678" sideWeight="0.49355432" order="0" side_tool="false" content_ui="combo" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32964602" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
