@@ -306,6 +306,9 @@ plot_table <- function(t, use.configs) {
     geom_text(aes(y=y, label=as.logical(z)),
               data=subset(t.plot, x == "feature.selection"),
               size=4) +
+    geom_text(aes(y=y, label=as.character(z)),
+              data=subset(t.plot, x == "feature.scaling"),
+              size=4) +
     # The text on the tiles, this time only the metrics (numerics)
     geom_text(aes(y=y, label=round(as.numeric(z),3)),
               data=subset(t.plot, x %in% metrics)) +
