@@ -33,6 +33,7 @@ library(ggplot2)
 library(tidyr)
 library(scales)
 library(gridExtra)
+library(zoo)
 
 
 # In Python logical values are expressed (and serialized to CSV using)
@@ -64,7 +65,7 @@ clf.ids <- read.csv(clf.ids.file, header=FALSE,
 batch.file = "poi_id_batch.csv"
 batch.col.names <- c("feature.scaling", "feature.selection", "clf.id",
                     "f1", "precision", "recall", "accuracy", "runtime")
-batch.col.types <- c("python.logical", "python.logical", "numeric",
+batch.col.types <- c("factor", "python.logical", "numeric",
                     "numeric", "numeric", "numeric", "numeric", "numeric")
 batch <- read.csv(batch.file, header=FALSE,
                   col.names=batch.col.names,
@@ -73,7 +74,7 @@ batch <- read.csv(batch.file, header=FALSE,
 # Let's add the rows/configurations to "batch" that were not recorded 
 # because the batch run timed out. 
 # First, this data frame will contain every possible combination
-clf.each.configs <- expand.grid(feature.scaling=c(F,T),
+clf.each.configs <- expand.grid(feature.scaling=c("off","on","pca"),
                                 feature.selection=c(F,T))
 # We also need a column which represents this cross-product as integer
 clf.each.configs$config.id <- factor(seq.int(nrow(clf.each.configs))-1)
@@ -139,7 +140,7 @@ bestest.ranked$config.id = as.factor(bestest.ranked$config.id)
 # file poi_id_featurescores.csv
 featurescores.file = "poi_id_featurescores.csv"
 featurescores.col.names <- c("feature.scaling", "clf.id", "feature", "score")
-featurescores.col.type <- c("python.logical", "numeric", "character", "numeric")
+featurescores.col.type <- c("factor", "numeric", "character", "numeric")
 featurescores <- read.csv(featurescores.file, header=FALSE,
                           col.names=featurescores.col.names,
                           colClasses=featurescores.col.type)
@@ -203,13 +204,15 @@ metrics_scale <- scale_fill_gradientn(
 # ggplot gradient for displaying algorithm configuration
 config_scale <- scale_shape_manual(
     name="Configuration", 
-    values=c("0"=0,"1"=1,"2"=15,"3"=16,"4"=63),
-    label=c("0"="no scaling,\nno feature selection",
-            "1"="scaling,\nno feature selection",
-            "2"="no scaling,\nfeature selection",
-            "3"="scaling,\nfeature selection",
-            "4"="indifferent"),
-    na.value=63
+    values=c("0"=0,"1"=1,"2"=2,"3"=15,"4"=16,"5"=17,"-1"=63),
+    label=c("0"="no feature scaling,\nmanual feature selection",
+            "1"="MinMax feature scaling,\nmanual feature selection",
+            "2"="PCA,\nmanual feature selection",
+            "3"="no feature scaling,\nautomatic feature selection",
+            "4"="MinMax feature scaling,\nautomatic feature selection",
+            "5"="PCA,\nautomatic feature selection",
+            "6"="indifferent",
+            "-1"="indifferent")
   )
 
 # ggplot colors for different classifiers; as color without guide
@@ -239,8 +242,9 @@ clf_scale_fill <- scale_fill_brewer(
 feature.scaling_labeller <- function(var, value){
   value <- as.character(value)
   if (var=="feature.scaling") { 
-    value[value==T] <- "feature scaling"
-    value[value==F] <- "no feature scaling"
+    value[value=="off"] <- "no feature scaling"
+    value[value=="on"] <- "MinMax feature scaling"
+    value[value=="pca"] <- "PCA"
   }
   return(value)
 }
@@ -279,7 +283,10 @@ plot_table <- function(t, use.configs) {
   # a separate "observation" / data row now (tile plots work like that,
   # every cell is one "observation")
   t.plot <- t %>% gather("x", "z", match(xs, names(t)))
-  
+  # Manipulate config.id to replace NA values with -1
+  t.plot$config.id.shape <- factor(as.character(t.plot$config.id), 
+                                   c(levels(t.plot$config.id),"-1"))
+  t.plot$config.id.shape[is.na(t.plot$config.id.shape)] <- "-1"
   # Build the tile plot
   p <- ggplot(data=t.plot, aes(x=x, y=clf.factor)) +
     # The tiles themselves for all the metrics
@@ -289,14 +296,15 @@ plot_table <- function(t, use.configs) {
     # The texts on the tiles, but this time only the classifer names
     geom_text(aes(y=y, label=as.factor(z)),
               data=subset(t.plot, x == "clf.factor"),
-              size=3, hjust=1, position=position_dodge(width=10)) +
+              size=3, hjust=1, position=position_dodge(width=5)) +
     # Also put a nice classifier symbol next to the name
-    geom_point(aes(y=y, color=factor(z,levels=clf.levels), shape=config.id),
+    geom_point(aes(y=y, color=factor(z,levels=clf.levels), 
+                   shape=config.id.shape),
                data=subset(t.plot, x == "clf.factor"),
                x = 1.2, size=4, stroke=2, alpha=0.5) + 
     # The texts on the tiles, this time only the configurations (logicals)
     geom_text(aes(y=y, label=as.logical(z)),
-              data=subset(t.plot, x %in% configs),
+              data=subset(t.plot, x == "feature.selection"),
               size=4) +
     # The text on the tiles, this time only the metrics (numerics)
     geom_text(aes(y=y, label=round(as.numeric(z),3)),
@@ -369,15 +377,15 @@ plot_runtime <- function(t) {
     theme_bw() + 
     theme(axis.text.x=element_blank()) + 
     # Group together 4 bars since they are from the same classifier
-    geom_vline(x=seq(4.5,(length(unique(t$clf.factor))-1)*4+4.5,4)) + 
+    geom_vline(x=seq(6.5,(length(unique(t$clf.factor))-1)*6+6.5,6)) + 
     # Add the classifier name spanning all four of their configurations
     # The "gsub" makes sure there is a word wrap after every space following 
     # the 10th and the 21st character (admittetly a bit hacky)
-    annotate("text", x=seq(2.5,(length(unique(t$clf.factor))-1)*4+2.5,4), y=2.5,
+    annotate("text", x=seq(3.5,(length(unique(t$clf.factor))-1)*6+6.5,6), y=2.0,
              label=gsub("^(.{,21})([^ ]*) (.*)$","\\1\\2\n\\3",
                         gsub("^(.{,10})([^ ]*) (.*)$","\\1\\2\n\\3", 
                              unique(t$clf.factor))),
-             size = 4) + 
+             size = 6) + 
     # No label needed on x axis, y axis = Runtime
     xlab(NULL) + ylab("Average runtime per train-test-split fold in seconds")
   

@@ -61,13 +61,27 @@ in the scandal) or not.
 The financial data included one outlier, a person "named" "TOTAL". It's
 financial features were strangely far from the other data points; this 
 data point was probably included while scrapping the financial data 
-off a table from a web page or document. I hard codedly removed the data 
-point from the data set as preproecessing step.
+off a table from a web page or document. There was a second data point 
+named "THE TRAVEL AGENCY IN THE PARK" which I also excluded due to it 
+not being a "person" of interest.
+
+I hard codedly removed both data points from the data set as preproecessing 
+step.
 
 
 # Feature Selection
 
 ## What features did you use? What selection process did you use?
+
+As a preprocessing step before selecting any features, I removed (or rather
+'disabled') features with a fraction of NA values above 75%. These were
+the following features with their relative fractions of NA values:
+
+```
+loan_advances                0.979167
+director_fees                0.895833
+restricted_stock_deferred    0.881944
+```
 
 I tried both manual feature selection after initial explorative analysis of
 the data and automatic feature selelction using the ```SelectKBest```
@@ -91,12 +105,13 @@ using option ```-f False```. In this case, I chose to use the following list
 of default features:
 
 ```
-salary, bonus, deferral_payments, loan_advances, expenses, 
-  exercised_stock_options, deferred_income, other, rate_poi_to_this_person,
-  rate_this_person_to_poi, rate_shared_receipt_with_poi
+salary, bonus, deferral_payments, loan_advances (rejected because fraction of 
+  NA values is >0.75), expenses, exercised_stock_options, deferred_income, 
+  other, rate_poi_to_this_person, rate_this_person_to_poi, 
+  rate_shared_receipt_with_poi
 ```
 
-For some classifiers, this manual feature selection actually performed better 
+For most classifiers, this manual feature selection actually performed better 
 than automatic feature selection. More about this in the section
 [Algorithms](#Algorithms) Since the algorithm of our choosing was among those,
 we are not using automatic feature selection by default. If you want to force 
@@ -105,23 +120,26 @@ we are not using automatic feature selection by default. If you want to force
 
 ## Did you have to do any scaling? Why (not)?
 
-The algorithm of our final choosing, a KNeighbors algorithm, did perform better
-without scaling (F1 score), as did some other algorithms. I found that this was
-true for all algorithms using Principal Component Analysis. PCA does in fact
-select axis based on feature variance and MinMaxScaler decreases this variance
-drastically by rescaling features to 0..1
-([source](http://sebastianraschka.com/Articles/2014_about_feature_scaling.html)).
+I compared performance of each algorithm by evaluating the algorithm without
+feature scaling, with ```MinMaxScaler``` feature scaling and using Principal 
+Component Analysis (PCA) *without any* feature scaling. 
+Since PCA finds the principal components based on highest variation
+of data, scaling features before PCA looses important information and actually
+lowers performance of PCA ([source][pcavsscaling]). The script ```poi_id.py```
+supports manually setting this option using ```-s on```, ```-s off``` and 
+```-s pca```.
 
-More on how feature scaling worked for different pipeline configurations in 
-section [Algorithms](#Algorithms).
+Only the AdaBoost'ed Decision tree algorithm performed best with 
+```MinMaxScaling```, all other algorithms actually performed best with PCA,
+as did the algorithm of our final choosing, KNeighbors. For more details see
+[Algorithms](#Algorithms). 
 
-Some algorithms I tried did however need scaling to run at all.
-For example, the Support Vector Classifier with polynomial kernel (to be testet
-amongst other values in ```GridSearchCV```) did not terminate within 45 minutes
-runtime on my machine if scaling was turned off.
+It should be noted, that some algorithms need some sort of scaling or PCA
+to run at all. For example, the Support Vector Classifier, when used with a 
+polynomial kernel amongst other values in ```GridSearchCV```) did not terminate
+within 45 minutes runtime on my machine if scaling was turned off.
 
-When running the pipeline using ```poi_id.py```, feature scaling can be turned
-on or off by using ```-s True``` or ```-s False```. Default is "off".
+[pcavsscaling]: https://discussions.udacity.com/t/mistake-in-the-way-email-poi-features-are-engineered-in-the-course/4841/11
 
 ## Which features did you try to make and why?
 
@@ -146,12 +164,30 @@ validation technique of those newly created features. I cannot assume a
 direct linear corellation with those features, therefore, they should not
 prove an obstacle to the algorithm.
 
+In addition to creating new features, I cross-validated the ```total_*```
+features by checking if the sum of their constituents resulted in the 
+value present in the data set. For performing this step, ```poi_id.py```
+has an option ```-l <filename>``` to write out the whole data set to 
+a CSV file which can be examined and further analyzed in, e.g., MS Excel.
+
+I found that there were a few values where a ```total_*``` feature was set
+to ```NA``` despite of actually some of its summands being present. For 
+these records, I could just recalculate the total value. For other data 
+points, I had to hard-codedly perform a "one-off" hack/change in the data set
+to ensure consistency. The whole data cleaning step is done as a manual
+pre-processing step. The following images show the process in detail: 
+
+![Cleaning process of feature total_payments](final_project/image_clean_total_payments.png)
+
+![Cleaning process of features total_stock_value](final_project/image_clean_total_stock_value.png)
+
 ## Which were the feature scores for SelectKBest? How did you choose the SelectKBest parameters?
 
 The image below shows the SelectKBest results for different classifiers.
-Every classifier used the same set of 9 automatically selected features (shown
-on the x-axis). I limited the number of features to 12. This was also the number of
-features I picked as relevant features when deactivating automatic feature selection.
+Every classifier used the same set of 11 automatically selected features (shown
+on the x-axis). This was also the number of features I picked as relevant features
+when deactivating automatic feature selection. Note, that for both sets of features
+the feature ```loan_advances```, having 97% NA values, is already excluded.
 
 ```{r features, warning=FALSE, message=FALSE, echo=FALSE, fig.width=12, fig.height=8}
 plot_features(featurescores.display, clf.labels) +
@@ -160,12 +196,14 @@ plot_features(featurescores.display, clf.labels) +
 
 As can be seen from the following diagram, the majority of the features 
 selected by ```SelectKBest``` were also already selected manually during the
-explorative analysis. A surprise was, that the two ```rate_*``` features did 
-not make it into the list. 
+explorative analysis. 
 
-![The system architecture with grader and data analyst as actors](final_project/image_feature_selection.png)
+![Outcome of both automatic and manual feature selection process](final_project/image_feature_selection.png)
 
 &nbsp;
+
+If principal component analysis is employed, the dimensionality of the data 
+is reduced to half, that is, 5 dimensions.
 
 
 # Algorithms 
@@ -179,8 +217,8 @@ and then tried improving the classifier by one or more of the following:
 
 * Wrapping the algorithm in a ```AdaboostClassifier``` if the algorithm
 supported weights (```DecisionTree``` or ```RandomForest```).
-* Wrapping the algorithm in a ```GridSearchCV``` if the algorithm 
-supported one or more tunable parameters (see 
+* Wrapping the algorithm in a ```GridSearchCV``` during cross-validation
+if the algorithm supported one or more tunable parameters (see 
 [Tuning the Algorithm](#Tuning-the-Algorithm)).
 * Adding RandomizedPCA
 
@@ -188,25 +226,22 @@ I tried the following algorithms (in that order):
 
 0. Gaussian Naive Bayes (```-c 0```): worked as a minimum viable product and
 "low bar" for algorithms to cross 
-1. RandomizedPCA and AdaBoosted Decision Tree (```-c 1```): was easy to 
-implement, a significant improvement, however, didn't fulfill the 
-requirement of scoring higher than 0.3 precision and recall
-2. RandomizedPCA and SVC with GridSearchCV (```-c 2```): took a while to get
-to work, finally did converge when using feature scaling and, with GridSearchCV
-over multiple kernels, gammas and Cs, scored more than 0.3 precision and 
-recall. It did, however, run quite slowly.
+1. AdaBoosted Decision Tree (```-c 1```): was quick to get to run but took a
+while to get above both 0.3 precision and recall for some time
+2. Support Vector Classifier (```-c 2```): was not possible to get to work with
+precision and recall > 0.0 using various sets of parameters
 3. Adaboosted RandomForest (```-c 3```): took very long and scores just very
 mediocre performance. A bit useless.
 4. RandomizedPCA and KNeighbors with GridSearchCV (```-c 4```): quite good 
-performance from the start, also very fast in the beginning, but ran much slower 
-after adding GridSearchCV, which again improved performance drastically.
+performance from the start, better precision and lower recall than 
+AdaBoost'ed decision tree, but running much faster
 5. LogisticRegression (```-c 5```): came in with quite mediocre performance 
 from the start, no time was spent trying to improve algorithm by tuning it.
 6. LDA (```-c 6```): mediocre performance, no time was spent trying to improve 
 algorithm by tuning it.
 
-I finally chose classifer pipeline (4.), the KNeighbors classifier with 
-RandomizedPCA and GridSearchCV due to its far superior performance and runtime.
+I finally chose classifer pipeline (4.), the KNeighbors classifierdue to its 
+superior performance and runtime.
 
 ## How did you model performance differ between algorithms?
 
@@ -227,15 +262,15 @@ train-test-split cross validation fold.
 
 ```{r table all, warning=FALSE, message=FALSE, echo=FALSE, fig.width=10, fig.height=10}
 plot_table(all.ranked, TRUE) +
-  geom_hline(y=c(4.5,8.5,12.5,16.5,20.5,24.5)) + 
+  geom_hline(y=c(6.5,12.5,18.5,24.5,30.5,36.5)) + 
   ggtitle("All cross-examined configurations ordered by performance")
 ```
 
 Just showing the highest performing configurations (pertaining to automatic 
 feature selection and feature scaling), we can also reduce this table in order
-to compare the classifiers more directly. Notice, how for some algorithms 
-(like Gaussian Naive Bayes, AdaboostedRandomForest and LDA) there might not even
-be a performance difference if feature scaling is turned on/off.
+to compare the classifiers more directly. Notice, how for all algorithms except
+Adaboost'ed DecisionTree algorithms worked best without automatic feature selection
+and with PCA. 
 
 ```{r table bestest, warning=FALSE, message=FALSE, echo=FALSE, fig.width=8, fig.height=4}
 plot_table(bestest.ranked, FALSE) +
@@ -244,7 +279,9 @@ plot_table(bestest.ranked, FALSE) +
 ```
 
 The following chart, finally, shows precision and recall of each algorithm; 
-notice the superiority of the KNeighbors and the SVC algorithm.
+notice the superiority of the KNeighbors, followed by AdaBoost'ed Decision Tree.
+We can also see the effect that PCA has on KNeighbors for manual feature selection:
+Using PCA, we have much higher precision, but lower recall.
 
 ```{r performance, warning=FALSE, message=FALSE, echo=FALSE, fig.width=12, fig.height=8}
 plot_performance(all.ranked) + 
@@ -276,7 +313,16 @@ giving a sweet-spot between precision/recall.
 For automatic tuning using ```GridSearchCV```, only "precision" is implemented and 
 was used wherever possible. ```GridSearchCV``` uses a list of potential parameter 
 values and tries every combination during training and chooses the one with best
-performance. 
+performance.
+
+Parameter tuning is only done once and should not be done during each training 
+step of the algorithm. Therefore, a option switch in ```poi_id.py``` is 
+implemented to find find the best GridSearchCV value: run ```poi_id.py``` with
+```-x out``` in order to run an algorithm with GridSearchCV and write the 
+optimal parameters to a file called ```poi_id_gridsearchcv.csv```. Run it with
+```-x in``` in order to read the best parameters from that file (default) or 
+run it with ```-x off``` in order to deactivate this method and use  
+hard coded default values for each algorithm.
 
 ## What can happen if you don’t do this well?
 
@@ -293,13 +339,35 @@ RandomizedPCA was executed using ```n_components=3```.
 For the algorithms supporting ```GridSearchCV```, the following parameters were
 tuned:
 
-* KNeighbors (the algorithm of our choosing): ```algorithm```, ```weights``` and
-```n_neighbors``` - this slowed down processing a lot but improved performance 
-drastically - especially the last value (```'n_neighbors': [1,2,3]```).
-* SVC: ```C```, ```gamma```, ```kernel``` - especially the ```kernel``` parameter
-was interesting (```'kernel': ['poly','rbf'])```): introducing it led to the 
-result of the algorithm not terminating when feature scaling is turned off, 
-but highly improved performance when it is turned on.
+### KNeighbors (the algorithm of our choosing)
+
+The following grid was tested:
+```python
+{ 'algorithm': ['ball_tree', 'kd_tree', 'auto'],
+  'weights': ['uniform','distance'],
+  'n_neighbors': [1,2,3] }
+```
+
+* ```weights``` was found to be optimal at ```uniform```
+* ```algorithm``` was found to be optimal at ```ball_tree```
+* ```n_neighbors``` was found to be optimal at ```3``` most of the times except 
+for ```1``` when using no feature selection and no PCA (not relevant for our 
+configuration of using PCA).
+
+### Support Vector Classifier
+
+Since SVC was so inherently instable, here its parameter grid only for the sake
+of completeness:
+```python
+{ 'C': [1e3, 1e4, 1e5],
+  'gamma': [0.0001, 0.001, 0.01, 0.1],
+  'kernel': ['rbf'] } # 'linear' or 'poly' led to the algorithm hanging
+```
+
+The 'optimal' configuration was found to be 
+```{ 'kernel': 'rbf', 'C': 1000.0, 'gamma': 0.0001}' }```.
+
+### Other Algorithms 
 
 For other algorithms (Adaboost Random Forest, Decision Tree), values were
 tuned manually. 
@@ -360,13 +428,16 @@ The harmonic mean of Precision and Recall, taking both measures in
 account and accounting for the fact that there is a trade-off between
 the two.
 
+See below (question "What would that mean in laymen terms...") for an
+explanation of these metrics in terms related to the project.
+
 ## What is your average performance on those metrics?
 
 The performance of our algorithm of choice (KNeighbors) with our preferred
 configuration (no scaling, no feature selection) is as follows (as already
 shown in section [Algorithms](#Algorithms)).
 
-$\text{F1} = 0.447, \text{Precision} = 0.649, \text{Recall} = 0.341$
+$\text{F1} = 0.487, \text{Precision} = 0.666, \text{Recall} = 0.384$
 
 One can see that the algorithm is heavily focussed on precision since 
 GridSearchCV optimizes for this evaluation metric.
@@ -374,7 +445,7 @@ GridSearchCV optimizes for this evaluation metric.
 ## What would that mean in laymen terms about the algorithm’s performance?
 
 For our algorithm, this result would mean, that the chance of a predicted
-POI indeed being a person of interest is 64.9%. Conversely, only 34.1%
+POI indeed being a person of interest is 66.6%. Conversely, only 38.4%
 of persons of interest are actually identified. In this case, one might 
 legitimately argue that one should optimize for the first percentage
 in order to keep the chance that someone is flagged as POI erroneously low.
@@ -388,16 +459,18 @@ fact, very easy. I used it also as a chance to deepen my R and python
 knowledge. A few things I would have done differently would I start over
 or re-visit this project later:
 
-* I noticed much later that scaling and PCA do not work very well together.
-I would try to run pipelines where only either of the two are used (right now
-PCA is mostly hardcoded into the system for some classifiers).
 * I would do some more cross-validation on the number of PCA components (I did
 some but only for one baseline-configuration: no scaling, no automatic 
 feature selection and for a few algorithms only and without GridSearchCV; 
 afterwards I just reused that classification pipeline step wherever it 
 increased performance slightly).
 * I would refactor the code of ```poi_id.py``` to be modularized more into an 
-object-oriented design.
+object-oriented design. Perhaps some of the code could also be modularized
+by writing custom ```Pipeline``` component classes. E.g., reading in the data
+or writing it out could be done in a pipeline step. However, I also wanted
+to keep the original input/output code from the project set up as untouched
+as possible so this would perhaps something that could be changed from the
+framework code supplied to students from the start of the assignment.
 
 
 # Appendix: System Design 
@@ -410,7 +483,8 @@ became clear to me that I would need to add some more functionality to the
 and perform cross-validation.
 
 I wanted to follow a more structured approach where I have tools to re-run
-previous classifiers, explore the data set, run and evaluate multiple 
+previous classifiers or GridSearchCV for different configurations, 
+explore the data set as both spreadsheet or visually, run and evaluate multiple
 classifiers in a batch sequence with the goal of comparing metrics and finally,
 visualizing the metrics, probably with some nice ggplot2 graphs in R. The 
 goal here was mostly to not loose track of any of the configurations I
@@ -419,11 +493,12 @@ at a later point very easily.
 
 I ended up enhancing the ```poi_id.py``` script to accept different command
 line options to show GUIs for data exploration, change the cross-validation 
-size, switch to different (previously tried) classifiers or modify pipeline
-configuration, like automatic scaling or feature selection. Using no command
-line options whatsoever, the script still fulfills the functionality 
-specified by the Data Analyst Nanodegree project rubric of creating and
-dumping my preferred classifier pipeline of choice, dataset and feature list.
+size or configuration, switch to different (previously tried) classifiers or 
+modify pipeline configuration, like automatic scaling, feature selection or PCA.
+Using no command line options whatsoever, the script still fulfills the 
+functionality specified by the Data Analyst Nanodegree project rubric of 
+creating and dumping my preferred classifier pipeline of choice, dataset and 
+feature list.
 
 Along with ```poi_id.py```there is also an helper class to show a Qt-based GUI
 and a wrapper script ```poi_id_batch.py``` to record metrics of various different 

@@ -1,7 +1,7 @@
 0,Gaussian Naive Bayes
-1,RandomizedPCA and AdaBoosted Decision Tree
-2,RandomizedPCA and SVC with GridSearchCV
-3,Adaboosted RandomForest
-4,RandomizedPCA and KNeighbors with GridSearchCV 
-5,LogisticRegression
+1,AdaBoost'ed Decision Tree
+2,Support Vector Classifier
+3,Adaboost'ed RandomForest
+4,KNeighbors 
+5,Logistic Regression
 6,LDA
