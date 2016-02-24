@@ -23,7 +23,7 @@ source(file="batch_analyzer.R")
 # Objective
 ## Which questions did we try to answer in the process?
 
-This machine learning project tries to identify Persons of Interest from the 
+This machine learning project tries to identify persons of interest from the 
 Enron Scandal. The [Enron Scandal][scandal] was the largest case of corporate 
 fraud in the history of the United States. Several people were indigted or 
 found guilty of misappropriation of large sums of money. People involved in
