@@ -207,10 +207,10 @@ config_scale <- scale_shape_manual(
     values=c("0"=0,"1"=1,"2"=2,"3"=15,"4"=16,"5"=17,"-1"=63),
     label=c("0"="no feature scaling,\nmanual feature selection",
             "1"="MinMax feature scaling,\nmanual feature selection",
-            "2"="PCA,\nmanual feature selection",
+            "2"="PCA without feature scaling,\nmanual feature selection",
             "3"="no feature scaling,\nautomatic feature selection",
             "4"="MinMax feature scaling,\nautomatic feature selection",
-            "5"="PCA,\nautomatic feature selection",
+            "5"="PCA without feature scaling,\nautomatic feature selection",
             "6"="indifferent",
             "-1"="indifferent")
   )
@@ -346,6 +346,8 @@ plot_performance <- function(t) {
       geom_vline(x=.3, color="gray") +
       geom_hline(y=.3, color="gray") +
       xlab("Precision") + ylab("Recall") + 
+      scale_x_continuous(breaks=seq(0.0,1.0,0.1)) + 
+      scale_y_continuous(breaks=seq(0.0,1.0,0.1)) +
       # Remove unnecessary stuff
       theme_bw()
   

@@ -2,7 +2,8 @@
 # coding=utf-8
 
 """
-The "Classify POIs from the Enron Scandal" classifier batch runner.
+The "Detect Fraud from the Enron Scandal with Machine Learning"
+classifier batch runner.
 
 Runs multiple takes of "python poi_id.py" with varying command line arguments,
 causing it to run in different configurations (with differently configured

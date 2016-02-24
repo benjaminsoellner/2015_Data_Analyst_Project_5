@@ -4,7 +4,19 @@
     <option name="CUSTOM_SCOPE_NAME" value="Module 'DAND_5_MachineLearningEnronData'" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="ce9cfc86-6bb8-4073-b856-bbdaf0c8afcd" name="Default" comment="" />
+    <list default="true" id="ce9cfc86-6bb8-4073-b856-bbdaf0c8afcd" name="Default" comment="">
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/final_project/data_dict.xlsx" afterPath="$PROJECT_DIR$/final_project/data_dict.xlsx" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/final_project/images.vsd" afterPath="$PROJECT_DIR$/final_project/images.vsd" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Data_Analyst_Project_5_-_Classify_POIs_with_Machine_Learning.Rmd" afterPath="$PROJECT_DIR$/Data_Analyst_Project_5_-_Classify_POIs_with_Machine_Learning.Rmd" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Data_Analyst_Project_5_-_Classify_POIs_with_Machine_Learning.html" afterPath="$PROJECT_DIR$/Data_Analyst_Project_5_-_Classify_POIs_with_Machine_Learning.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/final_project/batch_analyzer.R" afterPath="$PROJECT_DIR$/final_project/batch_analyzer.R" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/final_project/poi_id.py" afterPath="$PROJECT_DIR$/final_project/poi_id.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/final_project/poi_id_batch.csv" afterPath="$PROJECT_DIR$/final_project/poi_id_batch.csv" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/final_project/poi_id_batch.py" afterPath="$PROJECT_DIR$/final_project/poi_id_batch.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/final_project/poi_id_featurescores.csv" afterPath="$PROJECT_DIR$/final_project/poi_id_featurescores.csv" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/final_project/poi_id_gridsearchcv.csv" afterPath="$PROJECT_DIR$/final_project/poi_id_gridsearchcv.csv" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/final_project/poi_id_gui.py" afterPath="$PROJECT_DIR$/final_project/poi_id_gui.py" />
+    </list>
     <ignored path="DAND_5_MachineLearningEnronData.iws" />
     <ignored path=".idea/workspace.xml" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -27,21 +39,23 @@
       <file leaf-file-name="poi_id.py" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/final_project/poi_id.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.22888617">
-              <caret line="92" column="26" selection-start-line="92" selection-start-column="26" selection-end-line="92" selection-end-column="26" />
+            <state vertical-scroll-proportion="0.32889965">
+              <caret line="88" column="18" selection-start-line="88" selection-start-column="18" selection-end-line="88" selection-end-column="18" />
               <folding>
-                <element signature="e#3021#3031#0" expanded="true" />
+                <element signature="e#3042#3052#0" expanded="true" />
               </folding>
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="classes.py" pinned="false" current-in-tab="false">
-        <entry file="file://C:/Unmanaged Programs/Anaconda/Lib/site-packages/sklearn/svm/classes.py">
+      <file leaf-file-name="poi_id_gui.py" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/final_project/poi_id_gui.py">
           <provider selected="true" editor-type-id="text-editor">
             <state vertical-scroll-proportion="0.0">
-              <caret line="377" column="14" selection-start-line="377" selection-start-column="14" selection-end-line="377" selection-end-column="14" />
-              <folding />
+              <caret line="4" column="4" selection-start-line="4" selection-start-column="4" selection-end-line="4" selection-end-column="4" />
+              <folding>
+                <element signature="e#504#520#0" expanded="true" />
+              </folding>
             </state>
           </provider>
         </entry>
@@ -100,9 +114,9 @@
         <entry file="file://$PROJECT_DIR$/final_project/poi_id_batch.py">
           <provider selected="true" editor-type-id="text-editor">
             <state vertical-scroll-proportion="0.0">
-              <caret line="67" column="34" selection-start-line="67" selection-start-column="34" selection-end-line="67" selection-end-column="34" />
+              <caret line="15" column="12" selection-start-line="15" selection-start-column="12" selection-end-line="15" selection-end-column="12" />
               <folding>
-                <element signature="e#859#881#0" expanded="true" />
+                <element signature="e#880#902#0" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -141,19 +155,20 @@
         <option value="$PROJECT_DIR$/final_project/feature_format.py" />
         <option value="$PROJECT_DIR$/tools/draw_data.py" />
         <option value="$PROJECT_DIR$/final_project/draw_data.py" />
-        <option value="$PROJECT_DIR$/final_project/poi_id_gui.py" />
         <option value="$PROJECT_DIR$/final_project/poi_id_clf_ids.csv" />
         <option value="$PROJECT_DIR$/final_project/poi_id_lib.py" />
         <option value="$PROJECT_DIR$/final_project/poi_id_gridsearchcv.csv" />
-        <option value="$PROJECT_DIR$/final_project/poi_id_batch.py" />
         <option value="$PROJECT_DIR$/final_project/poi_id.py" />
+        <option value="$PROJECT_DIR$/final_project/poi_id_gui.py" />
+        <option value="$PROJECT_DIR$/final_project/poi_id_batch.py" />
       </list>
     </option>
   </component>
   <component name="ProjectFrameBounds">
-    <option name="x" value="-8" />
-    <option name="width" value="1932" />
-    <option name="height" value="1038" />
+    <option name="x" value="-9" />
+    <option name="y" value="-9" />
+    <option name="width" value="1938" />
+    <option name="height" value="1048" />
   </component>
   <component name="ProjectInspectionProfilesVisibleTreeState">
     <entry key="Project Default">
@@ -199,6 +214,40 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
+      <pane id="Scope">
+        <subPane subId="Problems" />
+        <subPane subId="Changed Files">
+          <PATH>
+            <PATH_ELEMENT USER_OBJECT="Root">
+              <option name="myItemId" value="" />
+              <option name="myItemType" value="" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT USER_OBJECT="DAND_5_MachineLearningEnronData">
+              <option name="myItemId" value="" />
+              <option name="myItemType" value="" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT USER_OBJECT="13_validation">
+              <option name="myItemId" value="" />
+              <option name="myItemType" value="" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT USER_OBJECT="train_test_split_in_sklearn">
+              <option name="myItemId" value="" />
+              <option name="myItemType" value="" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT USER_OBJECT="Root">
+              <option name="myItemId" value="" />
+              <option name="myItemType" value="" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT USER_OBJECT="DAND_5_MachineLearningEnronData">
+              <option name="myItemId" value="" />
+              <option name="myItemType" value="" />
+            </PATH_ELEMENT>
+          </PATH>
+        </subPane>
+      </pane>
+      <pane id="Scratches" />
       <pane id="ProjectPane">
         <subPane>
           <PATH>
@@ -335,40 +384,6 @@
             <PATH_ELEMENT>
               <option name="myItemId" value="01_naive_bayes" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-        </subPane>
-      </pane>
-      <pane id="Scratches" />
-      <pane id="Scope">
-        <subPane subId="Problems" />
-        <subPane subId="Changed Files">
-          <PATH>
-            <PATH_ELEMENT USER_OBJECT="Root">
-              <option name="myItemId" value="" />
-              <option name="myItemType" value="" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT USER_OBJECT="DAND_5_MachineLearningEnronData">
-              <option name="myItemId" value="" />
-              <option name="myItemType" value="" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT USER_OBJECT="13_validation">
-              <option name="myItemId" value="" />
-              <option name="myItemType" value="" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT USER_OBJECT="train_test_split_in_sklearn">
-              <option name="myItemId" value="" />
-              <option name="myItemType" value="" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT USER_OBJECT="Root">
-              <option name="myItemId" value="" />
-              <option name="myItemType" value="" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT USER_OBJECT="DAND_5_MachineLearningEnronData">
-              <option name="myItemId" value="" />
-              <option name="myItemType" value="" />
             </PATH_ELEMENT>
           </PATH>
         </subPane>
@@ -649,10 +664,10 @@
     </todo-panel>
   </component>
   <component name="ToolWindowManager">
-    <frame x="-8" y="0" width="1932" height="1038" extended-state="0" />
-    <editor active="false" />
+    <frame x="-9" y="-9" width="1938" height="1048" extended-state="6" />
+    <editor active="true" />
     <layout>
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.16587678" sideWeight="0.49355432" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.16506922" sideWeight="0.49355432" order="0" side_tool="false" content_ui="combo" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32964602" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.39933628" sideWeight="0.5081622" order="11" side_tool="false" content_ui="tabs" />
       <window_info id="Python Console" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32964602" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
@@ -726,20 +741,6 @@
     <watches-manager />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/feature_selection/find_signature.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.5378641">
-          <caret line="49" column="3" selection-start-line="49" selection-start-column="3" selection-end-line="49" selection-end-column="3" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/tools/parse_out_email_text.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.33261803">
-          <caret line="36" column="12" selection-start-line="36" selection-start-column="8" selection-end-line="36" selection-end-column="12" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/tools/email_preprocess.py">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.21888413">
@@ -898,7 +899,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
           <caret line="429" column="13" selection-start-line="429" selection-start-column="4" selection-end-line="429" selection-end-column="13" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -920,13 +920,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.13584475">
           <caret line="7" column="0" selection-start-line="7" selection-start-column="0" selection-end-line="7" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/final_project/poi_id_gui.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.07762557">
-          <caret line="4" column="0" selection-start-line="4" selection-start-column="0" selection-end-line="4" selection-end-column="72" />
         </state>
       </provider>
     </entry>
@@ -994,14 +987,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://C:/Unmanaged Programs/Anaconda/Lib/site-packages/sklearn/linear_model/logistic.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="883" column="17" selection-start-line="883" selection-start-column="4" selection-end-line="883" selection-end-column="17" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$USER_HOME$/.PyCharm50/system/python_stubs/-675832170/_csv.py">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.15570934">
@@ -1009,28 +994,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://C:/Unmanaged Programs/Anaconda/Lib/site-packages/pandas/core/frame.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="199" column="8" selection-start-line="199" selection-start-column="8" selection-end-line="199" selection-end-column="8" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://C:/Unmanaged Programs/Anaconda/Lib/site-packages/sklearn/ensemble/__init__.py">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="-0.060491495">
           <caret line="5" column="0" selection-start-line="5" selection-start-column="0" selection-end-line="5" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/final_project/tester.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="40" column="27" selection-start-line="24" selection-start-column="0" selection-end-line="40" selection-end-column="27" />
-          <folding>
-            <element signature="e#348#361#0" expanded="true" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -1042,11 +1009,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://C:/Unmanaged Programs/Anaconda/Lib/site-packages/sklearn/cross_validation.py">
+    <entry file="file://C:/Unmanaged Programs/Anaconda/Lib/site-packages/sklearn/grid_search.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="1591" column="38" selection-start-line="1591" selection-start-column="38" selection-end-line="1591" selection-end-column="38" />
-          <folding />
+        <state vertical-scroll-proportion="0.6557093">
+          <caret line="328" column="14" selection-start-line="328" selection-start-column="14" selection-end-line="328" selection-end-column="14" />
         </state>
       </provider>
     </entry>
@@ -1066,13 +1032,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://C:/Unmanaged Programs/Anaconda/Lib/site-packages/sklearn/grid_search.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.6557093">
-          <caret line="328" column="14" selection-start-line="328" selection-start-column="14" selection-end-line="328" selection-end-column="14" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://C:/Unmanaged Programs/Anaconda/Lib/site-packages/sklearn/base.py">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
@@ -1081,22 +1040,82 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://C:/Unmanaged Programs/Anaconda/Lib/site-packages/sklearn/cross_validation.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="1591" column="38" selection-start-line="1591" selection-start-column="38" selection-end-line="1591" selection-end-column="38" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://C:/Unmanaged Programs/Anaconda/Lib/site-packages/pandas/core/frame.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="199" column="8" selection-start-line="199" selection-start-column="8" selection-end-line="199" selection-end-column="8" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://C:/Unmanaged Programs/Anaconda/Lib/site-packages/sklearn/linear_model/logistic.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="883" column="17" selection-start-line="883" selection-start-column="4" selection-end-line="883" selection-end-column="17" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/final_project/tester.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="40" column="27" selection-start-line="24" selection-start-column="0" selection-end-line="40" selection-end-column="27" />
+          <folding>
+            <element signature="e#348#361#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/final_project/__init__.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/final_project/poi_id_batch.csv">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/final_project/poi_id_gui.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="4" column="4" selection-start-line="4" selection-start-column="4" selection-end-line="4" selection-end-column="4" />
+          <folding>
+            <element signature="e#504#520#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/final_project/poi_id_batch.py">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
-          <caret line="67" column="34" selection-start-line="67" selection-start-column="34" selection-end-line="67" selection-end-column="34" />
+          <caret line="15" column="12" selection-start-line="15" selection-start-column="12" selection-end-line="15" selection-end-column="12" />
           <folding>
-            <element signature="e#859#881#0" expanded="true" />
+            <element signature="e#880#902#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/final_project/poi_id.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.22888617">
-          <caret line="92" column="26" selection-start-line="92" selection-start-column="26" selection-end-line="92" selection-end-column="26" />
+        <state vertical-scroll-proportion="0.32889965">
+          <caret line="88" column="18" selection-start-line="88" selection-start-column="18" selection-end-line="88" selection-end-column="18" />
           <folding>
-            <element signature="e#3021#3031#0" expanded="true" />
+            <element signature="e#3042#3052#0" expanded="true" />
           </folding>
         </state>
       </provider>

@@ -2,7 +2,8 @@
 # coding=utf-8
 
 """
-The "Classify POIs from the Enron Scandal" classifier trainer/tester.
+The "Detect Fraud from the Enron Scandal with Machine Learning"
+classifier trainer/tester.
 
 Creates and selects features from the Enron Scandal Dataset, builds a POI
 classifier pipeline, trains and tests it with multiple train/test splits,
@@ -71,8 +72,6 @@ import pickle
 import pprint
 import csv
 
-from sphinx.addnodes import index
-
 from poi_id_gui import PoiIdGui
 
 
@@ -136,7 +135,7 @@ def _byteify(data, ignore_dicts = False):
     # if this is a dictionary, return dictionary of byteified keys and values
     # but only if we haven't already byteified it
     if isinstance(data, dict) and not ignore_dicts:
-        return {
+            return {
             _byteify(key, ignore_dicts=True): _byteify(value, ignore_dicts=True)
             for key, value in data.iteritems()
         }
@@ -359,15 +358,13 @@ except:
     feature_scaling = default_f_scaling
 
 # If we do use feature scaling, add as min-max-scaler to the pipeline
-if feature_scaling == "minmax":
+if feature_scaling == "on":
     scaler = MinMaxScaler()
     pipe.extend([('MinMaxScaler',scaler)])
 elif feature_scaling == "pca":
     pca = RandomizedPCA(n_components=(len(preferred_features_list)-1)/2,
                         random_state=815)
     pipe.extend([('RandomizedPCA',pca)])
-
-
 
 # ------------
 # STEP 5
@@ -500,9 +497,12 @@ elif clf_id == 2:
     # SVC with grid search for parameters and PCA
     search_grid = {'C': [1e3, 1e4, 1e5],
                    'gamma': [0.0001, 0.001, 0.01, 0.1],
-                   'kernel': ['rbf']}
+                   'kernel': ['rbf', 'poly']}
     run_grid = {'kernel': ['rbf'], 'C': [1000.0], 'gamma': [0.0001]}
     algorithm = SVC(class_weight='auto')
+    if feature_scaling != "on":
+        raise Exception("Error: Support Vector Classifier must use " +
+                "feature_scaling.")
 elif clf_id == 1:
     # Decision Tree Classifier + AdaBoost + PCA
     tree = DecisionTreeClassifier(min_samples_split=20)

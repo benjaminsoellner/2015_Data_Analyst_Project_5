@@ -2,7 +2,8 @@
 # coding=utf-8
 
 """
-The "Classify POIs from the Enron Scandal" Exploratory Data Analysis GUI
+The "Detect Fraud from the Enron Scandal with Machine Learning"
+Exploratory Data Analysis GUI
 
 GUI for performing univariate data analysis (histogram plots) and bivariate
 data analyis (scatter plots) on numerical data sets in a window with multiple
@@ -19,8 +20,6 @@ import numpy
 import sys
 from PyQt4 import QtCore
 from PyQt4 import QtGui as qt
-from matplotlib.backends.backend_qt4agg import FigureCanvasQTAgg as FigureCanvas
-from matplotlib.figure import Figure
 import matplotlib.pyplot as pyplot
 
 

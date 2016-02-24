@@ -1,6 +1,5 @@
 ---
-title: Data Analyst Project 5 - Classify Person of Interests from the Enron Scandal 
-  with Machine Learning
+title: Data Analyst Project 5 - Detect Fraud from the Enron Scandal with Machine Learning
 author: "Benjamin Soellner"
 date: "15. Februar 2016"
 output:
@@ -27,8 +26,8 @@ source(file="batch_analyzer.R")
 This machine learning project tries to identify Persons of Interest from the 
 Enron Scandal. The [Enron Scandal][scandal] was the largest case of corporate 
 fraud in the history of the United States. Several people were indigted or 
-imprisoned. Large amounts of money were misappropriated. People involved in
-the Enron scandal are called "Persons of Interest" (poi) in this assignment.
+found guilty of misappropriation of large sums of money. People involved in
+the Enron scandal are called "persons of interest" (POI) in this assignment.
 
 We are building a machine learning algorithm that can, given some financial
 data of an employee and some data from the so-called [Enron Corpus][corpus] 
@@ -43,8 +42,8 @@ Many Persons of Interest were main benefactors from the fraud and therefore
 took away huge sums of money, either as salary, bonus, as stock options or as 
 other compensations. The Enron Corpus moreover gives an idea about which 
 employees were in frequent contact with one another. From this data source we 
-hope to get insights how information about malpractices spreaded through the 
-company.
+hope to get insights how information about malpractices was spreading through 
+the company.
 
 ## How is machine learning useful in this context?
 
@@ -52,30 +51,37 @@ No single feature about a person (financial or email-related) can give us
 a clear yes-no answer about whether a person is "of interest" or not. 
 Machine Learning helps us discover patterns in the interplay of the features
 available to us. It should also give us an opportunity to predict whether 
-persons are "of interest" when we see new data, of which we do not have any
-information yet as to whether they are "of interest" (meaning: being involved
-in the scandal) or not.
+persons are "of interest" when we see new data about persons, of which we do 
+not have any information yet as to whether they are "of interest"
+(meaning: being involved in the scandal) or not.
 
 ## Were there any outliers? How did you handle them?
 
-The financial data included one outlier, a person "named" "TOTAL". It's
-financial features were strangely far from the other data points; this 
-data point was probably included while scrapping the financial data 
-off a table from a web page or document. There was a second data point 
-named "THE TRAVEL AGENCY IN THE PARK" which I also excluded due to it 
-not being a "person" of interest.
+Of the 146 observations / persons in the data set, there were two outliers:
 
-I hard codedly removed both data points from the data set as preproecessing 
+* a person "named" "TOTAL", probably included while scrapping the financial data 
+off a table from a web page or document. As a value containing the sum of all
+features, it was laying far outside the spectrum for all features and easily 
+recognizable
+
+* a person "named" "THE TRAVEL AGENCY IN THE PARK" which I also excluded due to 
+it not being a real "person" at all.
+
+I hard-codedly removed both data points from the data set as preproecessing 
 step.
 
+Without outliers, the data set contained 144 observations and of those, 
+18 (12.5%) were classified as POI and 126 (87.5%) as non-POI. 
 
 # Feature Selection
 
 ## What features did you use? What selection process did you use?
 
 As a preprocessing step before selecting any features, I removed (or rather
-'disabled') features with a fraction of NA values above 75%. These were
-the following features with their relative fractions of NA values:
+"disabled"") features which had a high number of missing (or "NA") values.
+I set the threshold of NA-fraction at 75% since 50% removed too many 
+features and impacted performance. The following features with their 
+relative fractions of NA values were removed:
 
 ```
 loan_advances                0.979167
@@ -83,15 +89,21 @@ director_fees                0.895833
 restricted_stock_deferred    0.881944
 ```
 
-I tried both manual feature selection after initial explorative analysis of
-the data and automatic feature selelction using the ```SelectKBest```
-preprocessor. 
+Narrowing features down, I tried both manual feature selection after 
+initial explorative analysis of the data and automatic feature selelction 
+using the ```SelectKBest``` preprocessor. 
 
-For explorative data analysis I implemented a helper class which shows some
-GUI windows with POIs and non-POIs highlighted in different color. An example
-window is shown below; the window is capable of displaying multiple plots
-in a tabbed view. It is also possible to control certain display parameters
-like number of histogram bins or alpha transparency with a spinner widget.
+You can choose to enable or disable automatic feature selection using 
+```SelectKBest```. Using ```-f True``` or ```-f False```. The default is 
+```-f False``` (**manual feature selection**) since that provided best 
+performance for most of the algorithms, including the one we chose.
+
+For selecting features manually using explorative data analysis I implemented 
+a helper class which shows some GUI windows with POIs and non-POIs 
+highlighted in different color. An example window is shown below; the window
+is capable of displaying multiple plots in a tabbed view. It is also possible
+to control certain display parameters like number of histogram bins or alpha
+transparency with a spinner widget.
 
 This GUI can be shown when calling the ```poi_id.py``` script with the options 
 ```-g univariate_analysis``` and ```-g bivariate_analysis``` respectively. 
@@ -100,9 +112,8 @@ This GUI can be shown when calling the ```poi_id.py``` script with the options
 
 &nbsp;
 
-You can force the classifier into manual feature selection mode by 
-using option ```-f False```. In this case, I chose to use the following list
-of default features:
+From this exploratory analysis I selected the following feature set to be 
+most indicative for POI-vs.-non-POI classification.
 
 ```
 salary, bonus, deferral_payments, loan_advances (rejected because fraction of 
@@ -111,39 +122,65 @@ salary, bonus, deferral_payments, loan_advances (rejected because fraction of
   rate_shared_receipt_with_poi
 ```
 
-For most classifiers, this manual feature selection actually performed better 
-than automatic feature selection. More about this in the section
-[Algorithms](#Algorithms) Since the algorithm of our choosing was among those,
-we are not using automatic feature selection by default. If you want to force 
-```poi_id.py``` to run _with_ automatic feature selection, supply the option
-```-f True```.
-
 ## Did you have to do any scaling? Why (not)?
 
 I compared performance of each algorithm by evaluating the algorithm without
 feature scaling, with ```MinMaxScaler``` feature scaling and using Principal 
-Component Analysis (PCA) *without any* feature scaling. 
-Since PCA finds the principal components based on highest variation
-of data, scaling features before PCA looses important information and actually
-lowers performance of PCA ([source][pcavsscaling]). The script ```poi_id.py```
-supports manually setting this option using ```-s on```, ```-s off``` and 
-```-s pca```.
+Component Analysis (PCA) _without_ feature scaling.
 
-Only the AdaBoost'ed Decision tree algorithm performed best with 
-```MinMaxScaling```, all other algorithms actually performed best with PCA,
-as did the algorithm of our final choosing, KNeighbors. For more details see
-[Algorithms](#Algorithms). 
+The script ```poi_id.py``` supports manually setting which configuration to 
+run using the option ```-s on```, ```-s off``` or ```-s pca```, while using
+**PCA (without scaling) is the default** (```-s pca```) and best performing 
+setting for all algorithms which were tested. For comparing exact performance,
+see [Algorithms](#Algorithms).
 
-It should be noted, that some algorithms need some sort of scaling or PCA
-to run at all. For example, the Support Vector Classifier, when used with a 
-polynomial kernel amongst other values in ```GridSearchCV```) did not terminate
-within 45 minutes runtime on my machine if scaling was turned off.
+Why is PCA ran without feature scaling?: I was made aware by a 
+[Udacity Forum Post][scalingvspca] that PCA usually underperforms when 
+scaling is employed before calling it, since PCA calculates its axes by 
+considering the variance of features, which is re-scaled when scaling each
+features values to the interval [0, 1]. 
 
-[pcavsscaling]: https://discussions.udacity.com/t/mistake-in-the-way-email-poi-features-are-engineered-in-the-course/4841/11
+I tested the hypothesis by re-running the whole simulation both with PCA 
+using scaling and PCA not using scaling. The results where generally 
+improved performance for all algorithms if scaling was not used. Only
+Support Vector Machines stopped working any time scaling was disabled.
 
-## Which features did you try to make and why?
+The exact numbers of PCA-with-scaling vs. PCA-without-scaling is documented
+in a [separate PDF file](final_project/image_pca_w_vs_wo_scaling.pdf) as 
+appendix. Frankly, the result that PCA performed better without scaling
+puzzled me, also because one project reviewer at Udacity commented 
+"Something to note here, PCA's process occurs in euclidean space and 
+similarly to algorithms like SVM e.t.c requires scaling to work 
+optimally."
 
-Three features were derived from the features ```from_this_person_to_poi```,
+It should be noted, that some algorithms need some sort of scaling 
+to run at all. For example, the Support Vector Classifier, when used 
+with a polynomial kernel amongst other values in ```GridSearchCV``` 
+did not terminate within 45 minutes runtime on my machine if 
+scaling was turned off.
+
+[scalingvspca]: https://discussions.udacity.com/t/confused-with-the-result-from-pca/47049/23?u=unclebenjamin
+
+## Which features did you try to make / modify and why?
+
+First, I cross-validated the existing ```total_*``` features by checking 
+if the sum of their constituents resulted in the value present in the data
+set. For performing this step, ```poi_id.py``` has an option 
+```-l <filename>``` to write out the whole data set to a CSV file which 
+can be examined and further analyzed in, e.g., MS Excel.
+
+I found that there were a few values where a ```total_*``` feature was set
+to ```NA``` despite of actually some of its summands being present. For 
+these records, I could just recalculate the total value. For other data 
+points, I had to hard-codedly perform a "one-off" hack/change in the data set
+to ensure consistency. The whole data cleaning step is done as a manual
+pre-processing step. The following images show the process in detail: 
+
+![Cleaning process of feature total_payments](final_project/image_clean_total_payments.png)
+
+![Cleaning process of features total_stock_value](final_project/image_clean_total_stock_value.png)
+
+I also created three new features: ```from_this_person_to_poi```,
 ```from_poi_to_this_person```, ```shared_receipt_with_poi```:
 
 $\text{rate_poi_to_this_person} = \frac{\text{from_poi_to_this_person}}{\text{from_messages}}$
@@ -164,46 +201,71 @@ validation technique of those newly created features. I cannot assume a
 direct linear corellation with those features, therefore, they should not
 prove an obstacle to the algorithm.
 
-In addition to creating new features, I cross-validated the ```total_*```
-features by checking if the sum of their constituents resulted in the 
-value present in the data set. For performing this step, ```poi_id.py```
-has an option ```-l <filename>``` to write out the whole data set to 
-a CSV file which can be examined and further analyzed in, e.g., MS Excel.
+One additional disclaimer should be added concerning the email features
+in general: since those features essentially make use of the knowledge
+whether persons, including the persons we assigned to the test set, 
+are POIs (which is the label we try to predict), we make ourselves 
+guilty of "data leakage" or "test set peeking" (see the 
+[relevant discussion in the Udacity forum][featurepeeking] or the 
+[associated thread on Quora][dataleakage]). 
 
-I found that there were a few values where a ```total_*``` feature was set
-to ```NA``` despite of actually some of its summands being present. For 
-these records, I could just recalculate the total value. For other data 
-points, I had to hard-codedly perform a "one-off" hack/change in the data set
-to ensure consistency. The whole data cleaning step is done as a manual
-pre-processing step. The following images show the process in detail: 
+How to avoid this problem?: The proper way would be to re-compute 
+the email-features during each train-test-split fold for training 
+and test set separately. For the training set, one would re-compute 
+the email-features from the Enron corpus using only the subset 
+of emails for persons in the training set. For the test set, one
+could compute these values based on the whole data set. 
 
-![Cleaning process of feature total_payments](final_project/image_clean_total_payments.png)
+For efficiency reasons, instead of running through the email corpus
+every time one generates the email-features, one could generate a 
+graph-like data structure with ...
 
-![Cleaning process of features total_stock_value](final_project/image_clean_total_stock_value.png)
+* vertices representing the persons
+* a set of directed edges being emails "sent" (or, reversely, "received")
+* a set of directed edges being Ccs shared
+
+This graph (or a sub-graph during the training process) may be re-used to 
+calculate the email features on-the-fly during each train-test-split-fold. 
+The following image showcases the principle of this idea for the
+sent/received emails, however, an implementation is out-of-scope for this
+project.
+
+![Avoiding data leakage by re-calculating email features from a (sub-)graph](final_project/image_data_leakage.png)
+
+&nbsp;
+
+[featurepeeking]: https://discussions.udacity.com/t/mistake-in-the-way-email-poi-features-are-engineered-in-the-course/4841/11
+[dataleakage]: https://www.quora.com/Whats-data-leakage-in-data-science
+
 
 ## Which were the feature scores for SelectKBest? How did you choose the SelectKBest parameters?
 
 The image below shows the SelectKBest results for different classifiers.
-Every classifier used the same set of 11 automatically selected features (shown
-on the x-axis). This was also the number of features I picked as relevant features
-when deactivating automatic feature selection. Note, that for both sets of features
-the feature ```loan_advances```, having 97% NA values, is already excluded.
+Every classifier used the same set of 10 automatically selected features (shown
+on the x-axis). The number (10 features) was chosen in order to achieve comparable
+results to the 10 manually selected features. Reducing number of features even 
+lower (by, e.g., rejecting more features with high number of NA-values) 
+impacted performance negatively. 
 
 ```{r features, warning=FALSE, message=FALSE, echo=FALSE, fig.width=12, fig.height=8}
 plot_features(featurescores.display, clf.labels) +
   ggtitle("Features Selected by SelectKBest")
 ```
 
-As can be seen from the following diagram, the majority of the features 
-selected by ```SelectKBest``` were also already selected manually during the
-explorative analysis. 
+As can be seen from the following diagram, there is a high overlap between 
+features selected automatically by ```SelectKBest``` and features selected by 
+intuition after explorative analysis. Note, that albeit first selected manually
+during explorative data analysis, the feature ```loan_advances```, having 97% NA 
+values, is excluded during the final analysis.
 
 ![Outcome of both automatic and manual feature selection process](final_project/image_feature_selection.png)
 
 &nbsp;
 
-If principal component analysis is employed, the dimensionality of the data 
-is reduced to half, that is, 5 dimensions.
+Note also, that if principal component analysis is employed, the whole 
+feature set (excluding rejected features) is used, but then reduced to *half*
+the dimensionality of the number of selected features, that is, to, 5 
+dimensions.
 
 
 # Algorithms 
@@ -212,35 +274,31 @@ is reduced to half, that is, 5 dimensions.
 
 <a name="Algorithms" />
 I tried a variety of algorithms, all selectable with the ```-c <clf_id>``` 
-option supplied to ```poi_id.py```. Each algorithm, I ran as a baseline
-and then tried improving the classifier by one or more of the following:
-
-* Wrapping the algorithm in a ```AdaboostClassifier``` if the algorithm
-supported weights (```DecisionTree``` or ```RandomForest```).
-* Wrapping the algorithm in a ```GridSearchCV``` during cross-validation
-if the algorithm supported one or more tunable parameters (see 
-[Tuning the Algorithm](#Tuning-the-Algorithm)).
-* Adding RandomizedPCA
+option supplied to ```poi_id.py```. Some of them make use of 
+```AdaboostClassifier``` (```DecisionTree``` or ```RandomForest```), some of
+them are wrapped in ```GridSearchCV``` supporting parameter tuning by
+cross-validation (see [Tuning the Algorithm](#Tuning-the-Algorithm)) 
+(```SVC```, ```KNeighbors```).
 
 I tried the following algorithms (in that order):
 
 0. Gaussian Naive Bayes (```-c 0```): worked as a minimum viable product and
 "low bar" for algorithms to cross 
-1. AdaBoosted Decision Tree (```-c 1```): was quick to get to run but took a
-while to get above both 0.3 precision and recall for some time
-2. Support Vector Classifier (```-c 2```): was not possible to get to work with
-precision and recall > 0.0 using various sets of parameters
+1. AdaBoosted Decision Tree (```-c 1```): was quick to get to run with 
+acceptable results but runs slow
+2. Support Vector Classifier (```-c 2```): was very unstable and only worked
+with feature scaling. Gave only mediocre results.
 3. Adaboosted RandomForest (```-c 3```): took very long and scores just very
-mediocre performance. A bit useless.
-4. RandomizedPCA and KNeighbors with GridSearchCV (```-c 4```): quite good 
-performance from the start, better precision and lower recall than 
-AdaBoost'ed decision tree, but running much faster
+mediocre performance. Useless.
+4. ```KNeighbors``` (```-c 4```): quite good 
+performance from the start, showed highest performance increase of all 
+if properly tuned with PCA. 
 5. LogisticRegression (```-c 5```): came in with quite mediocre performance 
 from the start, no time was spent trying to improve algorithm by tuning it.
 6. LDA (```-c 6```): mediocre performance, no time was spent trying to improve 
 algorithm by tuning it.
 
-I finally chose classifer pipeline (4.), the KNeighbors classifierdue to its 
+I finally chose classifer (4.), the **KNeighbors** classifier due to its 
 superior performance and runtime.
 
 ## How did you model performance differ between algorithms?
@@ -267,9 +325,9 @@ plot_table(all.ranked, TRUE) +
 ```
 
 Just showing the highest performing configurations (pertaining to automatic 
-feature selection and feature scaling), we can also reduce this table in order
+feature selection and feature scaling / PCA), we can also reduce this table in order
 to compare the classifiers more directly. Notice, how for all algorithms except
-Adaboost'ed DecisionTree algorithms worked best without automatic feature selection
+SVC and AdaBoost'ed Decision Tree worked best without automatic feature selection
 and with PCA. 
 
 ```{r table bestest, warning=FALSE, message=FALSE, echo=FALSE, fig.width=8, fig.height=4}
@@ -317,7 +375,7 @@ performance.
 
 Parameter tuning is only done once and should not be done during each training 
 step of the algorithm. Therefore, a option switch in ```poi_id.py``` is 
-implemented to find find the best GridSearchCV value: run ```poi_id.py``` with
+implemented to find the best GridSearchCV value: run ```poi_id.py``` with
 ```-x out``` in order to run an algorithm with GridSearchCV and write the 
 optimal parameters to a file called ```poi_id_gridsearchcv.csv```. Run it with
 ```-x in``` in order to read the best parameters from that file (default) or 
@@ -347,25 +405,33 @@ The following grid was tested:
   'weights': ['uniform','distance'],
   'n_neighbors': [1,2,3] }
 ```
+The best parameters were for the various configurations:
 
-* ```weights``` was found to be optimal at ```uniform```
-* ```algorithm``` was found to be optimal at ```ball_tree```
-* ```n_neighbors``` was found to be optimal at ```3``` most of the times except 
-for ```1``` when using no feature selection and no PCA (not relevant for our 
-configuration of using PCA).
+Feature Scaling | Feature Selection | ``n_neighbors`` | ``weights``  | ``algorithm``
+----------------|-------------------|-----------------|--------------|--------------
+```off```/none  | automatic         | ``3``           | ``uniform``  | ``ball_tree``
+```off```/none  | manual            | ``1``           | ``uniform``  | ``ball_tree``
+```on```/MinMax | automatic         | ``1``           | ``uniform``  | ``ball_tree``
+```on```/MinMax | manual            | ``1``           | ``uniform``  | ``ball_tree``
+```pca```       | automatic         | ``3``           | ``uniform``  | ``ball_tree``
+```pca```       | manual            | ``3``           | ``uniform``  | ``ball_tree``
 
 ### Support Vector Classifier
 
-Since SVC was so inherently instable, here its parameter grid only for the sake
-of completeness:
+The SVC vector could only be computed once automatic feature scaling was enabled.
+The search grid was:
+
 ```python
 { 'C': [1e3, 1e4, 1e5],
   'gamma': [0.0001, 0.001, 0.01, 0.1],
-  'kernel': ['rbf'] } # 'linear' or 'poly' led to the algorithm hanging
+  'kernel': ['rbf', 'poly'] } 
 ```
+The best parameter were for the various configurations:
 
-The 'optimal' configuration was found to be 
-```{ 'kernel': 'rbf', 'C': 1000.0, 'gamma': 0.0001}' }```.
+Feature Scaling | Feature Selection | ``kernel`` | ``C``        | ``gamma``
+----------------|-------------------|------------|--------------|-----------
+```on```/MinMax | automatic         | ``poly``   | ``100000.0`` | ``0.1``
+```on```/MinMax | manual            | ``poly``   | ``100000.0`` | ``0.01``
 
 ### Other Algorithms 
 
@@ -399,7 +465,12 @@ therefore a more honest evaluation.
 I re-implemented the ```StratifiedShuffleSplit``` cross-validation also found in 
 ```tester.py```. This method divides the dataset into train and test set multiple
 times (in the tester: 1000 times) and each fold sets aside 10 percent of the 
-data as test set. By choosing multiple train-test-set-splits and averaging the 
+data as test set. Since only 12.5% of the data are POI, this resulted in a few 
+runs with no POI samples in the test set or no predicted samples. During training,
+of one train-test-split fold, this threw an error since precision, the metric
+that was optimized for, could not be computed without samples predicted to be POI.
+
+By choosing multiple train-test-set-splits and averaging the 
 performance over all predictions we can smooth out potential biases which might 
 by chance lay in a particular train-test-split. Overall, we are also using our whole
 dataset more economically.
@@ -512,7 +583,7 @@ for each batch run and could be easily automated and done overnight.
 The following figure shows the actors and components of the target system and
 the interaction between those. The color defines the implemented use case.
 All scripts and files are in the ```final_project``` directory except of the
-*.Rmd and the *.html files, which are in the project root directory.
+\*.Rmd and the \*.html files, which are in the project root directory.
 
 ![The system architecture with grader and data analyst as actors](final_project/image_system_architecture.png)
 
