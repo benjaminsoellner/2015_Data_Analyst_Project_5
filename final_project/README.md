@@ -31,6 +31,6 @@ Ressource files used for project report:
 ```poi_id_batch.py``` containing pipeline performance information
 * ```poi_id_clf_ids.csv```: static information about the classifiers used
 
-[1]: https://rawgit.com/benjaminsoellner/DAND_5_MachineLearningEnronData/master/Data_Analyst_Project_5_-_Classify_POIs_with_Machine_Learning.html#System-Design
+[1]: https://benjaminsoellner.github.io/DAND_5_MachineLearningEnronData/Data_Analyst_Project_5_-_Classify_POIs_with_Machine_Learning.html#System-Design
 
 by Benjamin Söllner - http://www.benkku.com´
